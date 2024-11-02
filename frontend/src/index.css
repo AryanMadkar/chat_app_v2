@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.up:hover {
+  scale: 1.01;
+  transition: transform 0.3s ease-in-out;
+  transform-origin: center;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
