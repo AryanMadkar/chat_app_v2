@@ -8,7 +8,7 @@ export const ThemeProvider = ({ children }) => {
 
   const fetchchats = async (signal) => {
     try {
-      const result = await axios.get("http://localhost:5000/api/data", {
+      const result = await axios.get("http://localhost:5000/chatapp/api/data", {
         signal,
       });
       setChatsdata(result.data);
