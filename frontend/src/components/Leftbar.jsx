@@ -8,9 +8,35 @@ const Leftbar = () => {
     <div className="h-full w-[40vw] py-2 px-3 flex items-center justify-center gap-2 flex-col">
       <div className="flex w-full flex-row  items-center justify-between">
         <h1 className="font-semibold text-2xl">My Chats</h1>
-        <button className="bg-blue-500 text-white py-1 px-2 rounded-md font-semibold">
-          New Group Chat
+        {/* Open the modal using document.getElementById('ID').showModal() method */}
+        <button
+          className="btn bg-blue-700 text-white"
+          onClick={() => document.getElementById("my_modal_1").showModal()}
+        >
+          Group chats
         </button>
+        <dialog id="my_modal_1" className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg capitalize">create group</h3>
+            <input
+              type="text"
+              placeholder="Create a new group"
+              className="input input-bordered my-2 w-full max-w-xs"
+            />
+            <input
+              type="text"
+              placeholder="Get members"
+              className="input input-bordered my-2 w-full max-w-xs"
+            />
+
+            <div className="modal-action">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
       <div className="h-[70vh] w-full flex flex-col flex-wrap overflow-auto">
         {chatsdata?.map((items, key) => {

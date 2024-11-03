@@ -1,21 +1,67 @@
-import React from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import logo from "/logo.png";
+import { toast } from "react-toastify";
+import axios from "axios";
+import _ from "lodash"; // Install lodash for debounce
+
 const NAvbar = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+
+  useEffect(() => {
+    // Use lodash debounce to set the debouncedQuery
+    const handler = _.debounce(() => {
+      setDebouncedQuery(searchQuery);
+    }, 800);
+
+    handler();
+
+    // Cleanup function to cancel debounce
+    return () => handler.cancel();
+  }, [searchQuery]);
+
+  const getsearch = useCallback(async (query) => {
+    try {
+      const source = axios.CancelToken.source(); // Create a CancelToken
+      const result = await axios.get("http://localhost:5000/chatapp/allusers", {
+        params: { query },
+        cancelToken: source.token,
+      });
+      console.log("Search results:", result.data);
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("Request canceled", error.message);
+      } else {
+        console.error("Failed to search", error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (debouncedQuery) {
+      getsearch(debouncedQuery);
+    }
+  }, [debouncedQuery, getsearch]);
+
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <div className="navbar bg-black">
       <div className="flex-1">
         <img src={logo} alt="Logo" className="logo h-[10vh] w-auto" />
       </div>
-      {/* searchicon */}
       <div className="flex-none gap-2">
         <div className="form-control">
           <input
             type="text"
             placeholder="Search"
             className="input input-bordered w-24 md:w-auto"
+            value={searchQuery}
+            onChange={handleInputChange}
           />
         </div>
-        {/* bellicon */}
         <button className="btn btn-ghost btn-circle">
           <div className="indicator">
             <svg
@@ -35,7 +81,6 @@ const NAvbar = () => {
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
         </button>
-        {/* profileicon */}
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
@@ -72,4 +117,4 @@ const NAvbar = () => {
   );
 };
 
-export default NAvbar;
+export default React.memo(NAvbar);

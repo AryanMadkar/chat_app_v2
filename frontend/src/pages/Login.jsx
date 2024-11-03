@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import image from "/logo.png";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const Login = () => {
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -28,6 +29,8 @@ const Login = () => {
       });
       if (response.data.success) {
         toast.success("Logged in successfully!");
+        localStorage.setItem("userinfo", json.stringify(response.data)); 
+        navigate("/");
         // Redirect to chat app page
         // Example: window.location.href = "/chat";
       }

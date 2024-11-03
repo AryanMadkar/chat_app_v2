@@ -5,6 +5,7 @@ const chats = require("./data/Data");
 const connectodb = require("./db/Dbconnect");
 const colors = require("colors");
 const router = require("./routes/User.routes");
+const chatrouter = require("./routes/Chat.routes");
 const app = express();
 
 app.use(express.json()); // Add parentheses here to call express.json()
@@ -13,6 +14,7 @@ app.use(cors());
 const port = process.env.PORT || 5000;
 
 app.use("/chatapp", router);
+app.use("/flex", chatrouter);
 
 const server = () => {
   connectodb();

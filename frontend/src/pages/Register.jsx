@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import image from "/logo.png";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
   // State for form fields
   const [formData, setFormData] = useState({
     name: "",
@@ -28,7 +29,7 @@ const Register = () => {
     e.preventDefault();
     try {
       if (formData.password !== formData.confirmPassword) {
-        alert("Password does not match");
+        toast("Password does not match");
         return;
       }
       const { confirmPassword, ...dataToSubmit } = formData;
@@ -39,6 +40,8 @@ const Register = () => {
 
       if (response.status === 201) {
         toast.success("Registration successful! You can now login.");
+        localStorage.setItem("userinfo", json.stringify(response.data));
+        navigate("/");
       }
       console.log(response.data);
     } catch (error) {

@@ -86,4 +86,25 @@ const authuser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { registerationuser, authuser };
+const allusers = asyncHandler(async (req, res) => {
+  try {
+    const keyword = req.query.search
+      ? {
+          $or: [
+            { name: { $regex: new RegExp(keyword, "i") } },
+            { email: { $regex: new RegExp(keyword, "i") } },
+          ],
+        }
+      : {};
+
+    const users = await usermodel
+      .find(keyword)
+      .find({ _id: { $ne: req.user._id } });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching users" });
+    console.error("Error fetching users:", error);
+  }
+});
+
+module.exports = { registerationuser, authuser, allusers };

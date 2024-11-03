@@ -8,7 +8,9 @@ const chats = require("../data/Data");
 const {
   registerationuser,
   authuser,
+  allusers,
 } = require("../controllers/REgisteration.controllers");
+const protect = require("../middleware/Auth.middleware");
 
 // Get all chats
 
@@ -32,6 +34,6 @@ router.get("/api/chat/:id", (req, res) => {
   res.send(chat);
 });
 router.post("/register", registerationuser);
-router.post("/login",authuser)
-
+router.post("/login", authuser);
+router.get("/allusers", protect, allusers);
 module.exports = router;
