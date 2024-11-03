@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import image from "/logo.png";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { json, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Register = () => {
     e.preventDefault();
     try {
       if (formData.password !== formData.confirmPassword) {
-        toast("Password does not match");
+        toast.error("Passwords do not match");
         return;
       }
       const { confirmPassword, ...dataToSubmit } = formData;
@@ -39,8 +39,8 @@ const Register = () => {
       );
 
       if (response.status === 201) {
-        toast.success("Registration successful! You can now login.");
-        localStorage.setItem("userinfo", json.stringify(response.data));
+        toast.success("Registration successful! You can now log in.");
+        localStorage.setItem("userinfo", JSON.stringify(response.data));
         navigate("/");
       }
       console.log(response.data);
@@ -57,8 +57,8 @@ const Register = () => {
   // Upload profile picture to Cloudinary and set URL to formData
   const postdetaile = async (file) => {
     try {
-      if (!file || file === undefined) {
-        toast("File not found");
+      if (!file) {
+        toast.error("File not found");
         return;
       }
       if (
@@ -83,7 +83,9 @@ const Register = () => {
           profilePicture: profilePictureUrl,
         }));
 
-        toast("File uploaded successfully");
+        toast.success("File uploaded successfully");
+      } else {
+        toast.error("Unsupported file type. Please upload a JPEG or PNG.");
       }
     } catch (error) {
       console.error(error);
@@ -120,16 +122,18 @@ const Register = () => {
                         onChange={handleChange}
                         placeholder="Type here name"
                         className="input input-bordered input-secondary w-full max-w-xs mb-4"
+                        required
                       />
 
                       {/* Email input */}
                       <input
-                        type="text"
+                        type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="Type here email"
                         className="input input-bordered input-secondary w-full max-w-xs mb-4"
+                        required
                       />
 
                       {/* Password input */}
@@ -140,6 +144,7 @@ const Register = () => {
                         onChange={handleChange}
                         placeholder="Type password"
                         className="input input-bordered input-secondary w-full max-w-xs mb-4"
+                        required
                       />
 
                       {/* Confirm Password input */}
@@ -150,6 +155,7 @@ const Register = () => {
                         onChange={handleChange}
                         placeholder="Confirm password"
                         className="input input-bordered input-secondary w-full max-w-xs mb-4"
+                        required
                       />
 
                       {/* Profile Picture input */}
@@ -159,6 +165,7 @@ const Register = () => {
                         </h1>
                         <input
                           type="file"
+                          accept="image/*"
                           onChange={(e) => {
                             postdetaile(e.target.files[0]);
                           }}
@@ -180,12 +187,14 @@ const Register = () => {
                       {/* Login button */}
                       <div className="flex items-center justify-between pb-6">
                         <p className="mb-0 mr-2">Have an account?</p>
-                        <button
-                          type="button"
-                          className="btn w-1/2 btn-active btn-secondary"
-                        >
-                          <Link to="/login">Login</Link>
-                        </button>
+                        <Link to="/login">
+                          <button
+                            type="button"
+                            className="btn w-1/2 btn-active px-10 btn-secondary"
+                          >
+                            Login
+                          </button>
+                        </Link>
                       </div>
                     </form>
                   </div>

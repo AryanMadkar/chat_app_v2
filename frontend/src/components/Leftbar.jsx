@@ -2,7 +2,7 @@ import React from "react";
 import { useTheme } from "../context/Context";
 
 const Leftbar = () => {
-  const { chatsdata, setChatsdata } = useTheme();
+  const { chatsdata, setChatsdata, accesschat, clickeduser ,setClickeduser } = useTheme();
 
   return (
     <div className="h-full w-[40vw] py-2 px-3 flex items-center justify-center gap-2 flex-col">

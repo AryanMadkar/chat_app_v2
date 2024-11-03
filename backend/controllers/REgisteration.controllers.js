@@ -91,11 +91,14 @@ const allusers = asyncHandler(async (req, res) => {
     const keyword = req.query.search
       ? {
           $or: [
-            { name: { $regex: new RegExp(keyword, "i") } },
-            { email: { $regex: new RegExp(keyword, "i") } },
+            { name: { $regex: new RegExp(req.query.search, "i") } },
+            { email: { $regex: new RegExp(req.query.search, "i") } },
           ],
         }
       : {};
+
+    console.log("Search keyword:", keyword);
+    console.log("User ID (excluding):", req.user._id); // To ensure req.user is defined
 
     const users = await usermodel
       .find(keyword)

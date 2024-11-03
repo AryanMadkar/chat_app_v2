@@ -27,13 +27,14 @@ const Login = () => {
         email: loginData.email,
         password: loginData.password,
       });
-      if (response.data.success) {
-        toast.success("Logged in successfully!");
-        localStorage.setItem("userinfo", json.stringify(response.data)); 
-        navigate("/");
-        // Redirect to chat app page
-        // Example: window.location.href = "/chat";
-      }
+      toast.success("Logged in successfully!");
+      const responselocal = localStorage.setItem(
+        "userinfo",
+        JSON.stringify(response.data)
+      );
+      console.log("local response : ", responselocal);
+
+      navigate("/");
 
       console.log(response.data);
     } catch (error) {
